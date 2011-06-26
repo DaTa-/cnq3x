@@ -1371,6 +1371,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\win_dinput.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\win32\win_input.cpp"
 				>
 				<FileConfiguration
@@ -1621,6 +1625,10 @@
 			</File>
 			<File
 				RelativePath="..\..\qcommon\vm_shim.h"
+				>
+			</File>
+			<File
+				RelativePath="..\win_dinput.h"
 				>
 			</File>
 			<File

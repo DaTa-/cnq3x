@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "../client/client.h"
 #include "win_local.h"
-
+#include "win_dinput.h"
 
 struct Mouse {
 	virtual qbool Init() { return qtrue; }
@@ -262,6 +262,26 @@ qbool winmouse_t::ProcessMessage( UINT msg, WPARAM wParam, LPARAM lParam )
 	return qtrue;
 }
 
+///////////////////////////////////////////////////////////////
+
+struct dinputmouse_t : public Mouse {
+	virtual qbool Init() { return IN_InitDIMouse(); }
+	virtual qbool Activate( qbool active );
+	virtual void Shutdown() { IN_ShutdownDIMouse(); }
+	virtual void Read( int* mx, int* my ) { IN_DIMouse( mx, my ); }
+};
+
+qbool dinputmouse_t::Activate( qbool active )
+{
+	if( active )
+		return IN_ActivateDIMouse();
+	
+	IN_DeactivateDIMouse();
+
+	return qtrue;
+}
+
+static dinputmouse_t dinputmouse;
 
 ///////////////////////////////////////////////////////////////
 
@@ -286,6 +306,15 @@ static void IN_StartupMouse()
 			return;
 		}
 		Com_Printf( "Raw mouse initialization failed\n" );
+	}
+	else if (in_mouse->integer == 2)
+	{
+		if (dinputmouse.Init()) {
+			mouse = &dinputmouse;
+			Com_Printf( "Using DirectInput mouse\n" );
+			return;
+		}
+		Com_Printf( "DirectInput mouse initialization failed\n" );
 	}
 
 	mouse = &winmouse;
