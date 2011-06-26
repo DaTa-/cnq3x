@@ -73,6 +73,7 @@ static channel_t		*freelist = NULL;
 int						s_rawend;
 portable_samplepair_t	s_rawsamples[MAX_RAW_SAMPLES];
 
+cvar_t* s_oldCode;
 
 static void S_Base_SoundInfo()
 {
@@ -260,50 +261,109 @@ static void S_Base_BeginRegistration()
 
 static void S_SpatializeOrigin( const vec3_t origin, int master_vol, int* left_vol, int* right_vol )
 {
-	vec_t		dot;
-	vec_t		dist;
-	vec_t		lscale, rscale, scale;
-	vec3_t		source_vec;
-	vec3_t		vec;
+	if( s_oldCode->integer )
+	{
+		#define		SOUND_FULLVOLUME	80
+		#define		SOUND_ATTENUATE		0.0008f
+		
+		vec_t		dot;
+		vec_t		dist;
+		vec_t		lscale, rscale, scale;
+		vec3_t		source_vec;
+		vec3_t		vec;
 
-	// calculate stereo seperation and distance attenuation
-	VectorSubtract( origin, listener_origin, source_vec );
-	dist = VectorNormalize( source_vec );
+		const float dist_mult = SOUND_ATTENUATE;
 
-	if (dist >= SOUND_MAX_DIST) {
-		*left_vol = *right_vol = 0;
-		return;
+		// calculate stereo seperation and distance attenuation
+		VectorSubtract(origin, listener_origin, source_vec);
+
+		dist = VectorNormalize(source_vec);
+		dist -= SOUND_FULLVOLUME;
+		if (dist < 0)
+			dist = 0;			// close enough to be at full volume
+		dist *= dist_mult;		// different attenuation levels
+
+		VectorRotate( source_vec, listener_axis, vec );
+
+		dot = -vec[1];
+
+		if (dma.channels == 1)
+		{ // no attenuation = no spatialization
+			rscale = 1.0;
+			lscale = 1.0;
+		}
+		else
+		{
+			rscale = 0.5 * (1.0 + dot);
+			lscale = 0.5 * (1.0 - dot);
+			//rscale = s_separation->value + ( 1.0 - s_separation->value ) * dot;
+			//lscale = s_separation->value - ( 1.0 - s_separation->value ) * dot;
+			if ( rscale < 0 ) {
+				rscale = 0;
+			}
+			if ( lscale < 0 ) {
+				lscale = 0;
+			}
+		}
+
+		// add in distance effect
+		scale = (1.0 - dist) * rscale;
+		*right_vol = (master_vol * scale);
+		if (*right_vol < 0)
+			*right_vol = 0;
+
+		scale = (1.0 - dist) * lscale;
+		*left_vol = (master_vol * scale);
+		if (*left_vol < 0)
+			*left_vol = 0;
 	}
+	else
+	{
+		vec_t		dot;
+		vec_t		dist;
+		vec_t		lscale, rscale, scale;
+		vec3_t		source_vec;
+		vec3_t		vec;
 
-	dist *= (1.0f / SOUND_MAX_DIST);
+		// calculate stereo seperation and distance attenuation
+		VectorSubtract( origin, listener_origin, source_vec );
+		dist = VectorNormalize( source_vec );
 
-	// attenuate correctly even if we can't spatialise
-	if (dma.channels == 1) {
-		*left_vol = *right_vol = master_vol * pow(1.0f - dist, SOUND_FALLOFF);
-		return;
+		if (dist >= SOUND_MAX_DIST) {
+			*left_vol = *right_vol = 0;
+			return;
+		}
+
+		dist *= (1.0f / SOUND_MAX_DIST);
+
+		// attenuate correctly even if we can't spatialise
+		if (dma.channels == 1) {
+			*left_vol = *right_vol = master_vol * pow(1.0f - dist, SOUND_FALLOFF);
+			return;
+		}
+
+		VectorRotate( source_vec, listener_axis, vec );
+		dot = -vec[1];
+
+		rscale = 0.5 * (1.0 + dot);
+		lscale = 0.5 * (1.0 - dot);
+		if ( rscale < 0 ) {
+			rscale = 0;
+		}
+		if ( lscale < 0 ) {
+			lscale = 0;
+		}
+
+		scale = master_vol * pow(1.0f - dist, SOUND_FALLOFF);
+
+		*right_vol = scale * rscale;
+		if (*right_vol < 0)
+			*right_vol = 0;
+
+		*left_vol = scale * lscale;
+		if (*left_vol < 0)
+			*left_vol = 0;
 	}
-
-	VectorRotate( source_vec, listener_axis, vec );
-	dot = -vec[1];
-
-	rscale = 0.5 * (1.0 + dot);
-	lscale = 0.5 * (1.0 - dot);
-	if ( rscale < 0 ) {
-		rscale = 0;
-	}
-	if ( lscale < 0 ) {
-		lscale = 0;
-	}
-
-	scale = master_vol * pow(1.0f - dist, SOUND_FALLOFF);
-
-	*right_vol = scale * rscale;
-	if (*right_vol < 0)
-		*right_vol = 0;
-
-	*left_vol = scale * lscale;
-	if (*left_vol < 0)
-		*left_vol = 0;
 }
 
 
@@ -1108,6 +1168,7 @@ qbool S_Base_Init( soundInterface_t *si )
 	s_mixPreStep = Cvar_Get( "s_mixPreStep", "0.05", CVAR_ARCHIVE );
 	s_show = Cvar_Get( "s_show", "0", CVAR_CHEAT );
 	s_testsound = Cvar_Get( "s_testsound", "0", CVAR_CHEAT );
+	s_oldCode = Cvar_Get( "s_oldCode", "0", CVAR_ARCHIVE );
 
 	if (!SNDDMA_Init())
 		return qfalse;
