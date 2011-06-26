@@ -21,6 +21,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 // win_local.h: Win32-specific Quake3 header file
 
+#ifdef _WIN32_WINNT
+#undef _WIN32_WINNT
+#endif
+
 #define _WIN32_WINNT 0x0501
 
 #include <windows.h>

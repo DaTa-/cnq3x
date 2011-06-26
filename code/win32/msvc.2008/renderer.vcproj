@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="renderer"
 	ProjectGUID="{AB424155-FBED-4D8D-B007-5B6CF93EA395}"
 	RootNamespace="renderer"
@@ -23,7 +23,7 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -47,10 +47,12 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
+				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
 				WholeProgramOptimization="true"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_BIND_TO_CURRENT_VCLIBS_VERSION=1"
 				StringPooling="true"
+				MinimalRebuild="false"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableEnhancedInstructionSet="1"
@@ -104,7 +106,7 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -126,8 +128,13 @@
 				Optimization="0"
 				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_BIND_TO_CURRENT_VCLIBS_VERSION=1"
+				MinimalRebuild="true"
+				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
+				SmallerTypeCheck="true"
 				RuntimeLibrary="1"
+				DisableLanguageExtensions="false"
+				RuntimeTypeInfo="false"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile="$(IntDir)\renderer.pch"
 				AssemblerListingLocation="$(IntDir)\"
@@ -770,6 +777,10 @@
 			>
 			<File
 				RelativePath="..\..\qcommon\cm_public.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\renderer\glext.h"
 				>
 			</File>
 			<File

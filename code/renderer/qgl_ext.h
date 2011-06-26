@@ -6,7 +6,7 @@ extern "C" {
 #endif // __cplusplus
 
 #include <GL/gl.h>
-#include <GL/glext.h>
+#include "glext.h"
 
 #include "../qcommon/q_shared.h"
 

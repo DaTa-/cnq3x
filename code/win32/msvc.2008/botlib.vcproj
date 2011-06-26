@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="botlib"
 	ProjectGUID="{A410161F-AE9F-485D-A01F-5294891430A6}"
 	RootNamespace="botlib"
@@ -23,13 +23,13 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
+			CharacterSet="0"
 			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="bg_public copy..."
-				CommandLine="xcopy /Y &quot;$(CPMA_SRC)\game\bg_public.h&quot; &quot;$(SolutionDir)code\game\&quot;"
+				Description=""
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -46,16 +46,19 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				InlineFunctionExpansion="1"
+				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
+				OmitFramePointers="true"
 				EnableFiberSafeOptimizations="true"
 				WholeProgramOptimization="true"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;BOTLIB;_BIND_TO_CURRENT_VCLIBS_VERSION=1"
 				StringPooling="true"
+				MinimalRebuild="false"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				EnableEnhancedInstructionSet="1"
+				DisableLanguageExtensions="true"
 				RuntimeTypeInfo="false"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile="$(IntDir)\botlib.pch"
@@ -106,12 +109,11 @@
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description="bg_public copy..."
-				CommandLine="xcopy /Y &quot;$(CPMA_SRC)\game\bg_public.h&quot; &quot;$(SolutionDir)code\game\&quot;"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -130,7 +132,9 @@
 				Optimization="0"
 				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;BOTLIB;DEBUG;_BIND_TO_CURRENT_VCLIBS_VERSION=1"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
+				SmallerTypeCheck="true"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile="$(IntDir)\botlib.pch"
