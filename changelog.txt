@@ -1,3 +1,10 @@
+26 Jun 11 - 1.47.1x
+
+add: in_mouse 2 DirectInput
+
+add: s_oldCode (default: 0 = off), switches between new and old sound attenuation code
+
+info: in 1.47 was added nukemonk's future, that automatically reconnects by qwfwd's request
 
 17 Sep 10 - 1.47
 
