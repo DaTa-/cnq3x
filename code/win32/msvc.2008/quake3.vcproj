@@ -17,7 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(QUAKE3)"
+			OutputDirectory=".\build\quake3_debug"
 			IntermediateDirectory=".\build\quake3_debug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
@@ -54,7 +54,7 @@
 				AdditionalIncludeDirectories="&quot;$(DXSDK_DIR)Include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_BIND_TO_CURRENT_VCLIBS_VERSION=1"
 				MinimalRebuild="true"
-				SmallerTypeCheck="true"
+				SmallerTypeCheck="false"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderFile="$(IntDir)\quake3.pch"
@@ -82,7 +82,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="winmm.lib wsock32.lib gdi32.lib opengl32.lib kernel32.lib user32.lib ole32.lib"
-				OutputFile="$(QUAKE3)\cnq3x.exe"
+				OutputFile="$(QUAKE3)\cnq3x-d.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(DXSDK_DIR)Lib\x86&quot;"
@@ -133,7 +133,6 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				Description=""
 				CommandLine=""
 			/>
 			<Tool
